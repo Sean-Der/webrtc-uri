@@ -1,6 +1,6 @@
 #  WebRTC URI
 
-* [Editor's Copy](https://sean-der.github.io/webrtc-uri/draft-ietf-mmusic-webrtc-uri.html)
+* [Editor's Copy](https://sean-der.github.io/webrtc-uri/draft-seaduboi-webrtc-uri.html)
 
 ## Building
 

@@ -1,7 +1,7 @@
 ---
 title: WebRTC URI for remote resource identification and local configuration
 abbrev: WebRTC URI
-docname: draft-ietf-webrtc-uri-latest
+docname: draft-seaduboi-webrtc-uri-latest
 date:
 category: std
 
@@ -95,7 +95,6 @@ The WebRTC URI takes two possible form
 # Examples of WebRTC URI Syntax
 ## Zeroconf
 ## Public server
-
 
 # Security, Privacy and Availability Benefits
 Without a WebRTC URI a signaling plane is required to establish a WebRTC session.
