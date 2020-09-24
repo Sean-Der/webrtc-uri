@@ -9,7 +9,7 @@ Expires: 28 March 2021
 
 
  WebRTC URI for remote resource identification and local configuration
-                      draft-ietf-webrtc-uri-latest
+                    draft-seaduboi-webrtc-uri-latest
 
 Abstract
 
