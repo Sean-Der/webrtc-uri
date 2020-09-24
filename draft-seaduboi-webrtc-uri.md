@@ -34,7 +34,9 @@ The Offer/Answer is exchanged via a signaling plane that is controlled by the us
 The WebRTC framework specifies protocol support for direct
 interactive rich communication using audio, video, and data between
 two peers. WebRTC was originally designed with the browser in mind. Usage
-of WebRTC has extended far beyond that.
+of WebRTC has extended far beyond that. This WebRTC URI is designed for users
+outside of the browser. In the browser these behaviors could be achieved with
+ORTC interfaces.
 
 The flexibility of WebRTC's signaling plane has made adoption difficult for some
 use cases.  The signaling plane also presents challenges around security, privacy and
@@ -46,7 +48,7 @@ information to establish a session. In some cases signaling is not necessary. If
 two WebRTC agents agree on some basic details signaling is not required. The greatest difficulty
 comes with establishing connectivity between two ICE Agents. {{!I-D.ietf-ice-rfc5245bis}}
 If these two ICE Agents use mDNS {{!I-D.cheshire-dnsext-multicastdns}} and are in the same
-network you can establish a Zeroconf session.  If one ICE Agent is world routable connectivity is
+network you can establish a Zeroconf session.  If one ICE Agent is World Routable connectivity is
 also easily possible. The WebRTC URI format does not allow connectivity between two ICE Agents that
 would require STUN or TURN.
 
@@ -78,39 +80,85 @@ Please note that this section is informational only.
 
 - A user can cast their desktop or a video to another device.
 
-## Use cases for World routable host
+## Use cases for World Routable host
 - A user can publish media real-time to a CDN
 
 - A user can connect to a CDN to watch a real-time video
 
 # The WebRTC URI Scheme
+The WebRTC URI takes two possible forms. The only difference is how the
+authority is handled.
 
-The WebRTC URI takes two possible form
+## Zeroconf
+Zeroconf is used for connecting two WebRTC Agents in the same network.
+These agents don't need to know a address/port ahead of time since the discovery
+is done via mDNS.
 
-    webrtc://<ice-user-fragment>:<ice-password>@<mDNS name>?<paramaters>
+    webrtc://<ice-user-fragment>:<ice-password>@<mDNS name>?<parameters>
 
-    webrtc://<ice-user-fragment>:<ice-password>@<IP/Port>?<paramaters>
+## World Routable
+World Routable URIs are used to connect to a host that is listening on a Address/Port.
+The Agent with the URI needs to know the Address/Port ahead of time.
 
+    webrtc://<ice-user-fragment>:<ice-password>@<Address/Port>?<parameters>
+
+## Parameters
+The following parameters are recognized, more will need to be added.
+
+* local-ice-ufrag = Local ICE Agent's user fragment ( STRING )
+* local-ice-pwd   = Local ICE Agent's password ( STRING )
+* datachannel     = Should a SCTP Assocation be started ( BOOL )
 
 # Examples of WebRTC URI Syntax
+
 ## Zeroconf
-## Public server
+The following two URIs would allow two WebRTC Agents in the same network to connect and have
+bi-directional text communication. The first agent would assume the mDNS name `alice.local` and
+the second would be `bob.local`.
 
-# Security, Privacy and Availability Benefits
-Without a WebRTC URI a signaling plane is required to establish a WebRTC session.
+    webrtc://eu6k:cae6@alice.local?local-ice-ufrag=adu3&local-ice-pwd=eew4&datachannel
 
-If an attacker is able to modify messages they could MITM a WebRTC Session. The attacker
-could replace the candidates and certificate fingerprint with their own. They could then
-route all traffic through a host they control. The two users would connect to each other
-and not realize that anything is wrong.
+    webrtc://adu3:eew4@bob.local?local-ice-ufrag=eu6k&local-ice-pwd=cae6&datachannel
+
+
+## World Routable
+The following URI allows a WebRTC Agent to connect to a World Routable agent.
+
+    webrtc://eu6k:cae6@example.org:5001?local-ice-ufrag=adu3&local-ice-pwd=eew4&datachannel
+
+# Sharing URIs
+The typical flow for crafting and sharing WebRTC URIs will differ depending on the use case.
+
+## Zeroconf
+For Zeroconf the two WebRTC Agents will need to agree on details ahead of time. The user will
+pick two unique mDNS names ahead of time and other details.
+
+In some cases you could have a device with a static name. It wouldn't need to know any details
+about the remote peer. You could have `my-security-camera.local`. Anyone could connect if they
+know the ICE authentication details.
+
+## World Routable
+A World Routable URI would be shared by the owner of the World Routable WebRTC Agent. This is
+something that a user could copy out of a dashboard and then could input into their local
+user agent.
+
+# Security, Privacy and Availability Benefits of WebRTC URIs
+Without the WebRTC URI a signaling plane is required to establish a WebRTC session.
+
+If an attacker is able to modify messages in the signaling plane they could MITM a WebRTC
+Session.  The attacker could replace the candidates and certificate fingerprint with their
+own. They could then route all traffic through a host they control. The two users would connect
+to each other and not realize that anything is wrong.
 
 If an attacker is able to observe messages they can extract valuable information around a session.
 The attacker is able to determine when a call is taking place. They are also able to determine how
 many media tracks are being exchanged.
 
-Many times two WebRTC agents are in the same LAN. The signaling plane is usually run on a world routable
+Many times two WebRTC agents are in the same LAN. The signaling plane is usually run on a World Routable
 server. The WebRTC Agents may have direct connectivity with each other, but not be able to connect to the
 signaling plane.
+
+# Compatibility with Existing WebRTC Implementations
 
 # Security Considerations
 
