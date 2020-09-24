@@ -1,0 +1,280 @@
+
+
+
+
+Network Working Group                                          S. DuBois
+Internet-Draft                                                      Pion
+Intended status: Standards Track                       24 September 2020
+Expires: 28 March 2021
+
+
+ WebRTC URI for remote resource identification and local configuration
+                      draft-ietf-webrtc-uri-latest
+
+Abstract
+
+   This document describes a Uniform Resource Identifier (URI) that
+   establishes a WebRTC session.  This URI serves two purposes.  First
+   it will identify a remote a WebRTC agent.  Second it will configure
+   the local WebRTC agent.
+
+   This provides an alternative to the SDP Offer/Answer exchange
+   [I-D.ietf-mmusic-sdp-offer-answer].  The Offer/Answer is exchanged
+   via a signaling plane that is controlled by the user
+   [I-D.ietf-rtcweb-jsep].
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 28 March 2021.
+
+Copyright Notice
+
+   Copyright (c) 2020 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+
+
+
+DuBois                    Expires 28 March 2021                 [Page 1]
+
+Internet-Draft                 WebRTC URI                 September 2020
+
+
+   extracted from this document must include Simplified BSD License text
+   as described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Simplified BSD License.
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+     1.1.  Specification of Requirements . . . . . . . . . . . . . .   3
+   2.  Use Cases . . . . . . . . . . . . . . . . . . . . . . . . . .   3
+     2.1.  Use cases for Zeroconf  . . . . . . . . . . . . . . . . .   3
+     2.2.  Use cases for World routable host . . . . . . . . . . . .   3
+   3.  The WebRTC URI Scheme . . . . . . . . . . . . . . . . . . . .   3
+   4.  Examples of WebRTC URI Syntax . . . . . . . . . . . . . . . .   4
+   5.  Security, Privacy and Availability Benefits . . . . . . . . .   4
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
+   8.  Acknowledgments . . . . . . . . . . . . . . . . . . . . . . .   4
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   4
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .   4
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .   5
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   5
+
+1.  Introduction
+
+   The WebRTC framework specifies protocol support for direct
+   interactive rich communication using audio, video, and data between
+   two peers.  WebRTC was originally designed with the browser in mind.
+   Usage of WebRTC has extended far beyond that.
+
+   The flexibility of WebRTC's signaling plane has made adoption
+   difficult for some use cases.  The signaling plane also presents
+   challenges around security, privacy and operational burden.  However
+   WebRTC's media plane is unambiguous.  Once two WebRTC Agents have
+   enough details from signaling it is easy to establish rich
+   communication.
+
+   The signaling plane is only necessary when two clients don't have
+   enough information to establish a session.  In some cases signaling
+   is not necessary.  If the two WebRTC agents agree on some basic
+   details signaling is not required.  The greatest difficulty comes
+   with establishing connectivity between two ICE Agents.
+   [I-D.ietf-ice-rfc5245bis] If these two ICE Agents use mDNS
+   [I-D.cheshire-dnsext-multicastdns] and are in the same network you
+   can establish a Zeroconf session.  If one ICE Agent is world routable
+   connectivity is also easily possible.  The WebRTC URI format does not
+   allow connectivity between two ICE Agents that would require STUN or
+   TURN.
+
+
+
+
+DuBois                    Expires 28 March 2021                 [Page 2]
+
+Internet-Draft                 WebRTC URI                 September 2020
+
+
+   Multiple sessions can be established using the same set of WebRTC
+   URIs.  This document describes a URI that contains these details.
+
+   Discussion of this work is encouraged to happen on the MMUSIC IETF
+   mailing list mmusic@ietf.org (mailto:mmusic@ietf.org) or on the
+   GitHub repository which contains the draft: https://github.com/sean-
+   der/webrtc-uri (https://github.com/sean-der/webrtc-uri).
+
+1.1.  Specification of Requirements
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in BCP
+   14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+2.  Use Cases
+
+   Please note that this section is informational only.
+
+2.1.  Use cases for Zeroconf
+
+   *  Two users can play a P2P multiplayer video game.  No backend
+      components are required for signaling.
+
+   *  Two users can exchange a file without depending on a 3rd party
+      server.
+
+   *  A user can connect to their security camera in the same network.
+
+   *  A user can cast their desktop or a video to another device.
+
+2.2.  Use cases for World routable host
+
+   *  A user can publish media real-time to a CDN
+
+   *  A user can connect to a CDN to watch a real-time video
+
+3.  The WebRTC URI Scheme
+
+   The WebRTC URI takes two possible form
+
+   webrtc://<ice-user-fragment>:<ice-password>@<mDNS name>?<paramaters>
+
+   webrtc://<ice-user-fragment>:<ice-password>@<IP/Port>?<paramaters>
+
+
+
+
+
+
+DuBois                    Expires 28 March 2021                 [Page 3]
+
+Internet-Draft                 WebRTC URI                 September 2020
+
+
+4.  Examples of WebRTC URI Syntax
+
+   ## Zeroconf ## Public server
+
+5.  Security, Privacy and Availability Benefits
+
+   Without a WebRTC URI a signaling plane is required to establish a
+   WebRTC session.
+
+   If an attacker is able to modify messages they could MITM a WebRTC
+   Session.  The attacker could replace the candidates and certificate
+   fingerprint with their own.  They could then route all traffic
+   through a host they control.  The two users would connect to each
+   other and not realize that anything is wrong.
+
+   If an attacker is able to observe messages they can extract valuable
+   information around a session.  The attacker is able to determine when
+   a call is taking place.  They are also able to determine how many
+   media tracks are being exchanged.
+
+   Many times two WebRTC agents are in the same LAN.  The signaling
+   plane is usually run on a world routable server.  The WebRTC Agents
+   may have direct connectivity with each other, but not be able to
+   connect to the signaling plane.
+
+6.  Security Considerations
+
+7.  IANA Considerations
+
+8.  Acknowledgments
+
+9.  References
+
+9.1.  Normative References
+
+   [I-D.cheshire-dnsext-multicastdns]
+              Cheshire, S. and M. Krochmal, "Multicast DNS", Work in
+              Progress, Internet-Draft, draft-cheshire-dnsext-
+              multicastdns-15, 9 December 2011, <http://www.ietf.org/
+              internet-drafts/draft-cheshire-dnsext-multicastdns-
+              15.txt>.
+
+
+
+
+
+
+
+
+
+
+DuBois                    Expires 28 March 2021                 [Page 4]
+
+Internet-Draft                 WebRTC URI                 September 2020
+
+
+   [I-D.ietf-ice-rfc5245bis]
+              Keranen, A., Holmberg, C., and J. Rosenberg, "Interactive
+              Connectivity Establishment (ICE): A Protocol for Network
+              Address Translator (NAT) Traversal", Work in Progress,
+              Internet-Draft, draft-ietf-ice-rfc5245bis-20, 8 March
+              2018, <http://www.ietf.org/internet-drafts/draft-ietf-ice-
+              rfc5245bis-20.txt>.
+
+   [I-D.ietf-mmusic-sdp-offer-answer]
+              Rosenberg, J. and H. Schulzrinne, "An Offer/Answer Model
+              with SDP", Work in Progress, Internet-Draft, draft-ietf-
+              mmusic-sdp-offer-answer-02, 28 February 2002,
+              <https://tools.ietf.org/html/draft-ietf-mmusic-sdp-offer-
+              answer-02>.
+
+   [I-D.ietf-rtcweb-jsep]
+              Uberti, J., Jennings, C., and E. Rescorla, "JavaScript
+              Session Establishment Protocol", Work in Progress,
+              Internet-Draft, draft-ietf-rtcweb-jsep-26, 27 February
+              2019, <http://www.ietf.org/internet-drafts/draft-ietf-
+              rtcweb-jsep-26.txt>.
+
+9.2.  Informative References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+
+Author's Address
+
+   Sean DuBois
+   Pion
+
+   Email: sean@pion.ly
+
+
+
+
+
+
+
+
+
+
+
+
+DuBois                    Expires 28 March 2021                 [Page 5]
