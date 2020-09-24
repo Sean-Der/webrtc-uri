@@ -68,24 +68,35 @@ Table of Contents
      1.1.  Specification of Requirements . . . . . . . . . . . . . .   3
    2.  Use Cases . . . . . . . . . . . . . . . . . . . . . . . . . .   3
      2.1.  Use cases for Zeroconf  . . . . . . . . . . . . . . . . .   3
-     2.2.  Use cases for World routable host . . . . . . . . . . . .   3
-   3.  The WebRTC URI Scheme . . . . . . . . . . . . . . . . . . . .   3
+     2.2.  Use cases for World Routable host . . . . . . . . . . . .   3
+   3.  The WebRTC URI Scheme . . . . . . . . . . . . . . . . . . . .   4
+     3.1.  Zeroconf  . . . . . . . . . . . . . . . . . . . . . . . .   4
+     3.2.  World Routable  . . . . . . . . . . . . . . . . . . . . .   4
+     3.3.  Parameters  . . . . . . . . . . . . . . . . . . . . . . .   4
    4.  Examples of WebRTC URI Syntax . . . . . . . . . . . . . . . .   4
-   5.  Security, Privacy and Availability Benefits . . . . . . . . .   4
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
-   8.  Acknowledgments . . . . . . . . . . . . . . . . . . . . . . .   4
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   4
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .   4
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .   5
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   5
+     4.1.  Zeroconf  . . . . . . . . . . . . . . . . . . . . . . . .   4
+     4.2.  World Routable  . . . . . . . . . . . . . . . . . . . . .   5
+   5.  Sharing URIs  . . . . . . . . . . . . . . . . . . . . . . . .   5
+     5.1.  Zeroconf  . . . . . . . . . . . . . . . . . . . . . . . .   5
+     5.2.  World Routable  . . . . . . . . . . . . . . . . . . . . .   5
+   6.  Security, Privacy and Availability Benefits of WebRTC URIs  .   5
+   7.  Compatibility with Existing WebRTC Implementations  . . . . .   6
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .   6
+   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
+   10. Acknowledgments . . . . . . . . . . . . . . . . . . . . . . .   6
+   11. References  . . . . . . . . . . . . . . . . . . . . . . . . .   6
+     11.1.  Normative References . . . . . . . . . . . . . . . . . .   6
+     11.2.  Informative References . . . . . . . . . . . . . . . . .   6
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   7
 
 1.  Introduction
 
    The WebRTC framework specifies protocol support for direct
    interactive rich communication using audio, video, and data between
    two peers.  WebRTC was originally designed with the browser in mind.
-   Usage of WebRTC has extended far beyond that.
+   Usage of WebRTC has extended far beyond that.  This WebRTC URI is
+   designed for users outside of the browser.  In the browser these
+   behaviors could be achieved with ORTC interfaces.
 
    The flexibility of WebRTC's signaling plane has made adoption
    difficult for some use cases.  The signaling plane also presents
@@ -94,17 +105,6 @@ Table of Contents
    enough details from signaling it is easy to establish rich
    communication.
 
-   The signaling plane is only necessary when two clients don't have
-   enough information to establish a session.  In some cases signaling
-   is not necessary.  If the two WebRTC agents agree on some basic
-   details signaling is not required.  The greatest difficulty comes
-   with establishing connectivity between two ICE Agents.
-   [I-D.ietf-ice-rfc5245bis] If these two ICE Agents use mDNS
-   [I-D.cheshire-dnsext-multicastdns] and are in the same network you
-   can establish a Zeroconf session.  If one ICE Agent is world routable
-   connectivity is also easily possible.  The WebRTC URI format does not
-   allow connectivity between two ICE Agents that would require STUN or
-   TURN.
 
 
 
@@ -113,6 +113,18 @@ DuBois                    Expires 28 March 2021                 [Page 2]
 
 Internet-Draft                 WebRTC URI                 September 2020
 
+
+   The signaling plane is only necessary when two clients don't have
+   enough information to establish a session.  In some cases signaling
+   is not necessary.  If the two WebRTC agents agree on some basic
+   details signaling is not required.  The greatest difficulty comes
+   with establishing connectivity between two ICE Agents.
+   [I-D.ietf-ice-rfc5245bis] If these two ICE Agents use mDNS
+   [I-D.cheshire-dnsext-multicastdns] and are in the same network you
+   can establish a Zeroconf session.  If one ICE Agent is World Routable
+   connectivity is also easily possible.  The WebRTC URI format does not
+   allow connectivity between two ICE Agents that would require STUN or
+   TURN.
 
    Multiple sessions can be established using the same set of WebRTC
    URIs.  This document describes a URI that contains these details.
@@ -146,21 +158,9 @@ Internet-Draft                 WebRTC URI                 September 2020
 
    *  A user can cast their desktop or a video to another device.
 
-2.2.  Use cases for World routable host
+2.2.  Use cases for World Routable host
 
    *  A user can publish media real-time to a CDN
-
-   *  A user can connect to a CDN to watch a real-time video
-
-3.  The WebRTC URI Scheme
-
-   The WebRTC URI takes two possible form
-
-   webrtc://<ice-user-fragment>:<ice-password>@<mDNS name>?<paramaters>
-
-   webrtc://<ice-user-fragment>:<ice-password>@<IP/Port>?<paramaters>
-
-
 
 
 
@@ -170,51 +170,51 @@ DuBois                    Expires 28 March 2021                 [Page 3]
 Internet-Draft                 WebRTC URI                 September 2020
 
 
+   *  A user can connect to a CDN to watch a real-time video
+
+3.  The WebRTC URI Scheme
+
+   The WebRTC URI takes two possible forms.  The only difference is how
+   the authority is handled.
+
+3.1.  Zeroconf
+
+   Zeroconf is used for connecting two WebRTC Agents in the same
+   network.  These agents don't need to know a address/port ahead of
+   time since the discovery is done via mDNS.
+
+   webrtc://<ice-user-fragment>:<ice-password>@<mDNS name>?<parameters>
+
+3.2.  World Routable
+
+   World Routable URIs are used to connect to a host that is listening
+   on a Address/Port.  The Agent with the URI needs to know the Address/
+   Port ahead of time.
+
+ webrtc://<ice-user-fragment>:<ice-password>@<Address/Port>?<parameters>
+
+3.3.  Parameters
+
+   The following parameters are recognized, more will need to be added.
+
+   *  local-ice-ufrag = Local ICE Agent's user fragment ( STRING )
+
+   *  local-ice-pwd = Local ICE Agent's password ( STRING )
+
+   *  datachannel = Should a SCTP Assocation be started ( BOOL )
+
 4.  Examples of WebRTC URI Syntax
 
-   ## Zeroconf ## Public server
+4.1.  Zeroconf
 
-5.  Security, Privacy and Availability Benefits
+   The following two URIs would allow two WebRTC Agents in the same
+   network to connect and have bi-directional text communication.  The
+   first agent would assume the mDNS name "alice.local" and the second
+   would be "bob.local".
 
-   Without a WebRTC URI a signaling plane is required to establish a
-   WebRTC session.
+webrtc://eu6k:cae6@alice.local?local-ice-ufrag=adu3&local-ice-pwd=eew4&datachannel
 
-   If an attacker is able to modify messages they could MITM a WebRTC
-   Session.  The attacker could replace the candidates and certificate
-   fingerprint with their own.  They could then route all traffic
-   through a host they control.  The two users would connect to each
-   other and not realize that anything is wrong.
-
-   If an attacker is able to observe messages they can extract valuable
-   information around a session.  The attacker is able to determine when
-   a call is taking place.  They are also able to determine how many
-   media tracks are being exchanged.
-
-   Many times two WebRTC agents are in the same LAN.  The signaling
-   plane is usually run on a world routable server.  The WebRTC Agents
-   may have direct connectivity with each other, but not be able to
-   connect to the signaling plane.
-
-6.  Security Considerations
-
-7.  IANA Considerations
-
-8.  Acknowledgments
-
-9.  References
-
-9.1.  Normative References
-
-   [I-D.cheshire-dnsext-multicastdns]
-              Cheshire, S. and M. Krochmal, "Multicast DNS", Work in
-              Progress, Internet-Draft, draft-cheshire-dnsext-
-              multicastdns-15, 9 December 2011, <http://www.ietf.org/
-              internet-drafts/draft-cheshire-dnsext-multicastdns-
-              15.txt>.
-
-
-
-
+webrtc://adu3:eew4@bob.local?local-ice-ufrag=eu6k&local-ice-pwd=cae6&datachannel
 
 
 
@@ -225,6 +225,86 @@ DuBois                    Expires 28 March 2021                 [Page 4]
 
 Internet-Draft                 WebRTC URI                 September 2020
 
+
+4.2.  World Routable
+
+   The following URI allows a WebRTC Agent to connect to a World
+   Routable agent.
+
+webrtc://eu6k:cae6@example.org:5001?local-ice-ufrag=adu3&local-ice-pwd=eew4&datachannel
+
+5.  Sharing URIs
+
+   The typical flow for crafting and sharing WebRTC URIs will differ
+   depending on the use case.
+
+5.1.  Zeroconf
+
+   For Zeroconf the two WebRTC Agents will need to agree on details
+   ahead of time.  The user will pick two unique mDNS names ahead of
+   time and other details.
+
+   In some cases you could have a device with a static name.  It
+   wouldn't need to know any details about the remote peer.  You could
+   have "my-security-camera.local".  Anyone could connect if they know
+   the ICE authentication details.
+
+5.2.  World Routable
+
+   A World Routable URI would be shared by the owner of the World
+   Routable WebRTC Agent.  This is something that a user could copy out
+   of a dashboard and then could input into their local user agent.
+
+6.  Security, Privacy and Availability Benefits of WebRTC URIs
+
+   Without the WebRTC URI a signaling plane is required to establish a
+   WebRTC session.
+
+   If an attacker is able to modify messages in the signaling plane they
+   could MITM a WebRTC Session.  The attacker could replace the
+   candidates and certificate fingerprint with their own.  They could
+   then route all traffic through a host they control.  The two users
+   would connect to each other and not realize that anything is wrong.
+
+   If an attacker is able to observe messages they can extract valuable
+   information around a session.  The attacker is able to determine when
+   a call is taking place.  They are also able to determine how many
+   media tracks are being exchanged.
+
+
+
+
+
+
+
+DuBois                    Expires 28 March 2021                 [Page 5]
+
+Internet-Draft                 WebRTC URI                 September 2020
+
+
+   Many times two WebRTC agents are in the same LAN.  The signaling
+   plane is usually run on a World Routable server.  The WebRTC Agents
+   may have direct connectivity with each other, but not be able to
+   connect to the signaling plane.
+
+7.  Compatibility with Existing WebRTC Implementations
+
+8.  Security Considerations
+
+9.  IANA Considerations
+
+10.  Acknowledgments
+
+11.  References
+
+11.1.  Normative References
+
+   [I-D.cheshire-dnsext-multicastdns]
+              Cheshire, S. and M. Krochmal, "Multicast DNS", Work in
+              Progress, Internet-Draft, draft-cheshire-dnsext-
+              multicastdns-15, 9 December 2011, <http://www.ietf.org/
+              internet-drafts/draft-cheshire-dnsext-multicastdns-
+              15.txt>.
 
    [I-D.ietf-ice-rfc5245bis]
               Keranen, A., Holmberg, C., and J. Rosenberg, "Interactive
@@ -248,7 +328,15 @@ Internet-Draft                 WebRTC URI                 September 2020
               2019, <http://www.ietf.org/internet-drafts/draft-ietf-
               rtcweb-jsep-26.txt>.
 
-9.2.  Informative References
+11.2.  Informative References
+
+
+
+
+DuBois                    Expires 28 March 2021                 [Page 6]
+
+Internet-Draft                 WebRTC URI                 September 2020
+
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -277,4 +365,28 @@ Author's Address
 
 
 
-DuBois                    Expires 28 March 2021                 [Page 5]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+DuBois                    Expires 28 March 2021                 [Page 7]
