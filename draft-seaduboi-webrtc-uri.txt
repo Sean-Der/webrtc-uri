@@ -73,8 +73,8 @@ Table of Contents
      3.1.  Zeroconf  . . . . . . . . . . . . . . . . . . . . . . . .   4
      3.2.  World Routable  . . . . . . . . . . . . . . . . . . . . .   4
      3.3.  Parameters  . . . . . . . . . . . . . . . . . . . . . . .   4
-   4.  Examples of WebRTC URI Syntax . . . . . . . . . . . . . . . .   4
-     4.1.  Zeroconf  . . . . . . . . . . . . . . . . . . . . . . . .   4
+   4.  Examples of WebRTC URI Syntax . . . . . . . . . . . . . . . .   5
+     4.1.  Zeroconf  . . . . . . . . . . . . . . . . . . . . . . . .   5
      4.2.  World Routable  . . . . . . . . . . . . . . . . . . . . .   5
    5.  Sharing URIs  . . . . . . . . . . . . . . . . . . . . . . . .   5
      5.1.  Zeroconf  . . . . . . . . . . . . . . . . . . . . . . . .   5
@@ -86,7 +86,7 @@ Table of Contents
    10. Acknowledgments . . . . . . . . . . . . . . . . . . . . . . .   7
    11. References  . . . . . . . . . . . . . . . . . . . . . . . . .   7
      11.1.  Normative References . . . . . . . . . . . . . . . . . .   7
-     11.2.  Informative References . . . . . . . . . . . . . . . . .   7
+     11.2.  Informative References . . . . . . . . . . . . . . . . .   8
    Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   8
 
 1.  Introduction
@@ -198,23 +198,23 @@ Internet-Draft                 WebRTC URI                 September 2020
    The following parameters are recognized, more will need to be added.
 
    *  ice-controlling = If Local ICE Agent is Controlling ( BOOL )
+      (defaults to true )
 
-   *  dtls-client = If Local DTLS Agent is Client ( BOOL)
+   *  dtls-client = If Local DTLS Agent is Client ( BOOL) (defaults to
+      false)
 
    *  local-ice-ufrag = Local ICE Agent's user fragment ( STRING )
+      (defaults to remote ufrag value)
 
-   *  local-ice-pwd = Local ICE Agent's password ( STRING )
+   *  local-ice-pwd = Local ICE Agent's password ( STRING ) (defaults to
+      remote pwd)
 
    *  datachannel = Should a SCTP Assocation be started ( BOOL )
+      (defaults to true)
 
-4.  Examples of WebRTC URI Syntax
+   *  fingerprint = DTLS fingerprint for local certificate (defaults to
+      previous/configured value for same URI)
 
-4.1.  Zeroconf
-
-   The following two URIs would allow two WebRTC Agents in the same
-   network to connect and have bi-directional text communication.  The
-   first agent would assume the mDNS name "alice.local" and the second
-   would be "bob.local".
 
 
 
@@ -225,6 +225,15 @@ DuBois                    Expires 29 March 2021                 [Page 4]
 
 Internet-Draft                 WebRTC URI                 September 2020
 
+
+4.  Examples of WebRTC URI Syntax
+
+4.1.  Zeroconf
+
+   The following two URIs would allow two WebRTC Agents in the same
+   network to connect and have bi-directional text communication.  The
+   first agent would assume the mDNS name "alice.local" and the second
+   would be "bob.local".
 
 webrtc://eu6k:cae6@alice.local?local-ice-ufrag=adu3&local-ice-pwd=eew4&datachannel&ice-controlling&dtls-client
 
@@ -264,6 +273,15 @@ webrtc://eu6k:cae6@example.org:5001?local-ice-ufrag=adu3&local-ice-pwd=eew4&data
    Without the WebRTC URI a signaling plane is required to establish a
    WebRTC session.
 
+
+
+
+
+DuBois                    Expires 29 March 2021                 [Page 5]
+
+Internet-Draft                 WebRTC URI                 September 2020
+
+
    If an attacker is able to modify messages in the signaling plane they
    could MITM a WebRTC Session.  The attacker could replace the
    candidates and certificate fingerprint with their own.  They could
@@ -274,13 +292,6 @@ webrtc://eu6k:cae6@example.org:5001?local-ice-ufrag=adu3&local-ice-pwd=eew4&data
    information around a session.  The attacker is able to determine when
    a call is taking place.  They are also able to determine how many
    media tracks are being exchanged.
-
-
-
-DuBois                    Expires 29 March 2021                 [Page 5]
-
-Internet-Draft                 WebRTC URI                 September 2020
-
 
    Many times two WebRTC agents are in the same LAN.  The signaling
    plane is usually run on a World Routable server.  The WebRTC Agents
@@ -311,8 +322,21 @@ webrtc://eu6k:cae6@example.org:5001?local-ice-ufrag=adu3&local-ice-pwd=eew4&data
    a=setup:actpass
    a=mid:0
    a=sctpmap:5000 webrtc-datachannel 1024
+   a=fingerprint:tbd
 
    And this Remote Description
+
+
+
+
+
+
+
+
+DuBois                    Expires 29 March 2021                 [Page 6]
+
+Internet-Draft                 WebRTC URI                 September 2020
+
 
    v=0
    r=- 0 2 IN IP4 127.0.0.1
@@ -326,17 +350,7 @@ webrtc://eu6k:cae6@example.org:5001?local-ice-ufrag=adu3&local-ice-pwd=eew4&data
    a=setup:passive
    a=mid:0
    a=sctpmap:5000 webrtc-datachannel 1024
-
-
-
-
-
-
-
-DuBois                    Expires 29 March 2021                 [Page 6]
-
-Internet-Draft                 WebRTC URI                 September 2020
-
+   a=fingerprint:tbd
 
 8.  Security Considerations
 
@@ -370,6 +384,16 @@ Internet-Draft                 WebRTC URI                 September 2020
               <https://tools.ietf.org/html/draft-ietf-mmusic-sdp-offer-
               answer-02>.
 
+
+
+
+
+
+DuBois                    Expires 29 March 2021                 [Page 7]
+
+Internet-Draft                 WebRTC URI                 September 2020
+
+
    [I-D.ietf-rtcweb-jsep]
               Uberti, J., Jennings, C., and E. Rescorla, "JavaScript
               Session Establishment Protocol", Work in Progress,
@@ -384,16 +408,6 @@ Internet-Draft                 WebRTC URI                 September 2020
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
-
-
-
-
-
-DuBois                    Expires 29 March 2021                 [Page 7]
-
-Internet-Draft                 WebRTC URI                 September 2020
-
-
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
@@ -404,20 +418,6 @@ Author's Address
    Pion
 
    Email: sean@pion.ly
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

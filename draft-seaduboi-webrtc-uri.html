@@ -1105,15 +1105,17 @@ webrtc://&lt;ice-user-fragment&gt;:&lt;ice-password&gt;@&lt;Address/Port&gt;?&lt
         </h3>
 <p id="section-3.3-1">The following parameters are recognized, more will need to be added.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.3-2.1">ice-controlling = If Local ICE Agent is Controlling ( BOOL )<a href="#section-3.3-2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-3.3-2.1">ice-controlling = If Local ICE Agent is Controlling ( BOOL ) (defaults to true )<a href="#section-3.3-2.1" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-3.3-2.2">dtls-client     = If Local DTLS Agent is Client ( BOOL)<a href="#section-3.3-2.2" class="pilcrow">¶</a>
+          <li class="normal" id="section-3.3-2.2">dtls-client     = If Local DTLS Agent is Client ( BOOL) (defaults to false)<a href="#section-3.3-2.2" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-3.3-2.3">local-ice-ufrag = Local ICE Agent's user fragment ( STRING )<a href="#section-3.3-2.3" class="pilcrow">¶</a>
+          <li class="normal" id="section-3.3-2.3">local-ice-ufrag = Local ICE Agent's user fragment ( STRING ) (defaults to remote ufrag value)<a href="#section-3.3-2.3" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-3.3-2.4">local-ice-pwd   = Local ICE Agent's password ( STRING )<a href="#section-3.3-2.4" class="pilcrow">¶</a>
+          <li class="normal" id="section-3.3-2.4">local-ice-pwd   = Local ICE Agent's password ( STRING ) (defaults to remote pwd)<a href="#section-3.3-2.4" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-3.3-2.5">datachannel     = Should a SCTP Assocation be started ( BOOL )<a href="#section-3.3-2.5" class="pilcrow">¶</a>
+          <li class="normal" id="section-3.3-2.5">datachannel     = Should a SCTP Assocation be started ( BOOL ) (defaults to true)<a href="#section-3.3-2.5" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-3.3-2.6">fingerprint     = DTLS fingerprint for local certificate (defaults to previous/configured value for same URI)<a href="#section-3.3-2.6" class="pilcrow">¶</a>
 </li>
         </ul>
 </section>
@@ -1233,6 +1235,7 @@ a=ice-pwd:eew4
 a=setup:actpass
 a=mid:0
 a=sctpmap:5000 webrtc-datachannel 1024
+a=fingerprint:tbd
 </pre><a href="#section-7-5" class="pilcrow">¶</a>
 </div>
 <p id="section-7-6">And this Remote Description<a href="#section-7-6" class="pilcrow">¶</a></p>
@@ -1250,6 +1253,7 @@ a=ice-pwd:cae6
 a=setup:passive
 a=mid:0
 a=sctpmap:5000 webrtc-datachannel 1024
+a=fingerprint:tbd
 </pre><a href="#section-7-7" class="pilcrow">¶</a>
 </div>
 </section>
