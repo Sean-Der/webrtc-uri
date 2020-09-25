@@ -170,36 +170,35 @@ Given the following URI
 
 You get this Local Description
 
-```
-v=0
-o=- 0 1 IN IP4 127.0.0.1
-s=-
-t=0 0
-m=application 9 DTLS/SCTP 5000
-c=IN IP4 127.0.0.1
-a=ice-ufrag:adu3
-a=ice-pwd:eew4
-a=setup:actpass
-a=mid:0
-a=sctpmap:5000 webrtc-datachannel 1024
-```
+
+    v=0
+    o=- 0 1 IN IP4 127.0.0.1
+    s=-
+    t=0 0
+    m=application 9 DTLS/SCTP 5000
+    c=IN IP4 127.0.0.1
+    a=ice-ufrag:adu3
+    a=ice-pwd:eew4
+    a=setup:actpass
+    a=mid:0
+    a=sctpmap:5000 webrtc-datachannel 1024
+
 
 And this Remote Description
 
-```
-v=0
-r=- 0 2 IN IP4 127.0.0.1
-s=-
-t=0 0
-m=application 9 DTLS/SCTP 5000
-c=IN IP4 127.0.0.1
-a=candidate:1966762134 1 udp 2122260223 example.org 5001 typ host
-a=ice-ufrag:eu6k
-a=ice-pwd:cae6
-a=setup:passive
-a=mid:0
-a=sctpmap:5000 webrtc-datachannel 1024
-```
+    v=0
+    r=- 0 2 IN IP4 127.0.0.1
+    s=-
+    t=0 0
+    m=application 9 DTLS/SCTP 5000
+    c=IN IP4 127.0.0.1
+    a=candidate:1966762134 1 udp 2122260223 example.org 5001 typ host
+    a=ice-ufrag:eu6k
+    a=ice-pwd:cae6
+    a=setup:passive
+    a=mid:0
+    a=sctpmap:5000 webrtc-datachannel 1024
+
 
 # Security Considerations
 
