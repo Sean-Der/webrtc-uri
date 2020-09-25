@@ -4,8 +4,8 @@
 
 Network Working Group                                          S. DuBois
 Internet-Draft                                                      Pion
-Intended status: Standards Track                       24 September 2020
-Expires: 28 March 2021
+Intended status: Standards Track                       25 September 2020
+Expires: 29 March 2021
 
 
  WebRTC URI for remote resource identification and local configuration
@@ -38,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 March 2021.
+   This Internet-Draft will expire on 29 March 2021.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-DuBois                    Expires 28 March 2021                 [Page 1]
+DuBois                    Expires 29 March 2021                 [Page 1]
 
 Internet-Draft                 WebRTC URI                 September 2020
 
@@ -86,7 +86,7 @@ Table of Contents
    10. Acknowledgments . . . . . . . . . . . . . . . . . . . . . . .   6
    11. References  . . . . . . . . . . . . . . . . . . . . . . . . .   6
      11.1.  Normative References . . . . . . . . . . . . . . . . . .   6
-     11.2.  Informative References . . . . . . . . . . . . . . . . .   6
+     11.2.  Informative References . . . . . . . . . . . . . . . . .   7
    Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   7
 
 1.  Introduction
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-DuBois                    Expires 28 March 2021                 [Page 2]
+DuBois                    Expires 29 March 2021                 [Page 2]
 
 Internet-Draft                 WebRTC URI                 September 2020
 
@@ -165,7 +165,7 @@ Internet-Draft                 WebRTC URI                 September 2020
 
 
 
-DuBois                    Expires 28 March 2021                 [Page 3]
+DuBois                    Expires 29 March 2021                 [Page 3]
 
 Internet-Draft                 WebRTC URI                 September 2020
 
@@ -197,6 +197,10 @@ Internet-Draft                 WebRTC URI                 September 2020
 
    The following parameters are recognized, more will need to be added.
 
+   *  ice-controlling = If Local ICE Agent is Controlling ( BOOL )
+
+   *  dtls-client = If Local DTLS Agent is Client ( BOOL)
+
    *  local-ice-ufrag = Local ICE Agent's user fragment ( STRING )
 
    *  local-ice-pwd = Local ICE Agent's password ( STRING )
@@ -212,26 +216,26 @@ Internet-Draft                 WebRTC URI                 September 2020
    first agent would assume the mDNS name "alice.local" and the second
    would be "bob.local".
 
-webrtc://eu6k:cae6@alice.local?local-ice-ufrag=adu3&local-ice-pwd=eew4&datachannel
-
-webrtc://adu3:eew4@bob.local?local-ice-ufrag=eu6k&local-ice-pwd=cae6&datachannel
 
 
 
 
 
-
-DuBois                    Expires 28 March 2021                 [Page 4]
+DuBois                    Expires 29 March 2021                 [Page 4]
 
 Internet-Draft                 WebRTC URI                 September 2020
 
+
+webrtc://eu6k:cae6@alice.local?local-ice-ufrag=adu3&local-ice-pwd=eew4&datachannel&ice-controlling&dtls-client
+
+webrtc://adu3:eew4@bob.local?local-ice-ufrag=eu6k&local-ice-pwd=cae6&datachannel
 
 4.2.  World Routable
 
    The following URI allows a WebRTC Agent to connect to a World
    Routable agent.
 
-webrtc://eu6k:cae6@example.org:5001?local-ice-ufrag=adu3&local-ice-pwd=eew4&datachannel
+webrtc://eu6k:cae6@example.org:5001?local-ice-ufrag=adu3&local-ice-pwd=eew4&datachannel&ice-controlling&dtls-client
 
 5.  Sharing URIs
 
@@ -273,11 +277,7 @@ webrtc://eu6k:cae6@example.org:5001?local-ice-ufrag=adu3&local-ice-pwd=eew4&data
 
 
 
-
-
-
-
-DuBois                    Expires 28 March 2021                 [Page 5]
+DuBois                    Expires 29 March 2021                 [Page 5]
 
 Internet-Draft                 WebRTC URI                 September 2020
 
@@ -288,6 +288,28 @@ Internet-Draft                 WebRTC URI                 September 2020
    connect to the signaling plane.
 
 7.  Compatibility with Existing WebRTC Implementations
+
+   A WebRTC URI can be parsed and used by a WebRTC implementation that
+   doesn't support URIs.  The values in the URI could be expanded to be
+   a SetLocalDescription and SetRemoteDescription.  These options could
+   also be handled by a ORTC Implementation.
+
+   Given the following URI
+
+webrtc://eu6k:cae6@example.org:5001?local-ice-ufrag=adu3&local-ice-pwd=eew4&datachannel&ice-controlling&dtls-client
+
+   You get this Local Description
+
+   "v=0 o=- 0 1 IN IP4 127.0.0.1 s=- t=0 0 m=application 9 DTLS/SCTP
+   5000 c=IN IP4 127.0.0.1 a=ice-ufrag:adu3 a=ice-pwd:eew4
+   a=setup:actpass a=mid:0 a=sctpmap:5000 webrtc-datachannel 1024"
+
+   And this Remote Description
+
+   "v=0 r=- 0 2 IN IP4 127.0.0.1 s=- t=0 0 m=application 9 DTLS/SCTP
+   5000 c=IN IP4 127.0.0.1 a=candidate:1966762134 1 udp 2122260223
+   example.org 5001 typ host a=ice-ufrag:eu6k a=ice-pwd:cae6
+   a=setup:passive a=mid:0 a=sctpmap:5000 webrtc-datachannel 1024"
 
 8.  Security Considerations
 
@@ -305,6 +327,16 @@ Internet-Draft                 WebRTC URI                 September 2020
               multicastdns-15, 9 December 2011, <http://www.ietf.org/
               internet-drafts/draft-cheshire-dnsext-multicastdns-
               15.txt>.
+
+
+
+
+
+
+DuBois                    Expires 29 March 2021                 [Page 6]
+
+Internet-Draft                 WebRTC URI                 September 2020
+
 
    [I-D.ietf-ice-rfc5245bis]
               Keranen, A., Holmberg, C., and J. Rosenberg, "Interactive
@@ -329,14 +361,6 @@ Internet-Draft                 WebRTC URI                 September 2020
               rtcweb-jsep-26.txt>.
 
 11.2.  Informative References
-
-
-
-
-DuBois                    Expires 28 March 2021                 [Page 6]
-
-Internet-Draft                 WebRTC URI                 September 2020
-
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -365,28 +389,4 @@ Author's Address
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-DuBois                    Expires 28 March 2021                 [Page 7]
+DuBois                    Expires 29 March 2021                 [Page 7]
