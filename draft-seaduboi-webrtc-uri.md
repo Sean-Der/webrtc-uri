@@ -105,6 +105,8 @@ The Agent with the URI needs to know the Address/Port ahead of time.
 ## Parameters
 The following parameters are recognized, more will need to be added.
 
+* ice-controlling = If Local ICE Agent is Controlling ( BOOL )
+* dtls-client     = If Local DTLS Agent is Client ( BOOL)
 * local-ice-ufrag = Local ICE Agent's user fragment ( STRING )
 * local-ice-pwd   = Local ICE Agent's password ( STRING )
 * datachannel     = Should a SCTP Assocation be started ( BOOL )
@@ -116,15 +118,14 @@ The following two URIs would allow two WebRTC Agents in the same network to conn
 bi-directional text communication. The first agent would assume the mDNS name `alice.local` and
 the second would be `bob.local`.
 
-    webrtc://eu6k:cae6@alice.local?local-ice-ufrag=adu3&local-ice-pwd=eew4&datachannel
+    webrtc://eu6k:cae6@alice.local?local-ice-ufrag=adu3&local-ice-pwd=eew4&datachannel&ice-controlling&dtls-client
 
     webrtc://adu3:eew4@bob.local?local-ice-ufrag=eu6k&local-ice-pwd=cae6&datachannel
-
 
 ## World Routable
 The following URI allows a WebRTC Agent to connect to a World Routable agent.
 
-    webrtc://eu6k:cae6@example.org:5001?local-ice-ufrag=adu3&local-ice-pwd=eew4&datachannel
+    webrtc://eu6k:cae6@example.org:5001?local-ice-ufrag=adu3&local-ice-pwd=eew4&datachannel&ice-controlling&dtls-client
 
 # Sharing URIs
 The typical flow for crafting and sharing WebRTC URIs will differ depending on the use case.
@@ -159,6 +160,46 @@ server. The WebRTC Agents may have direct connectivity with each other, but not 
 signaling plane.
 
 # Compatibility with Existing WebRTC Implementations
+A WebRTC URI can be parsed and used by a WebRTC implementation that doesn't support URIs. The values in
+the URI could be expanded to be a SetLocalDescription and SetRemoteDescription. These options could also be
+handled by a ORTC Implementation.
+
+Given the following URI
+
+    webrtc://eu6k:cae6@example.org:5001?local-ice-ufrag=adu3&local-ice-pwd=eew4&datachannel&ice-controlling&dtls-client
+
+You get this Local Description
+
+```
+v=0
+o=- 0 1 IN IP4 127.0.0.1
+s=-
+t=0 0
+m=application 9 DTLS/SCTP 5000
+c=IN IP4 127.0.0.1
+a=ice-ufrag:adu3
+a=ice-pwd:eew4
+a=setup:actpass
+a=mid:0
+a=sctpmap:5000 webrtc-datachannel 1024
+```
+
+And this Remote Description
+
+```
+v=0
+r=- 0 2 IN IP4 127.0.0.1
+s=-
+t=0 0
+m=application 9 DTLS/SCTP 5000
+c=IN IP4 127.0.0.1
+a=candidate:1966762134 1 udp 2122260223 example.org 5001 typ host
+a=ice-ufrag:eu6k
+a=ice-pwd:cae6
+a=setup:passive
+a=mid:0
+a=sctpmap:5000 webrtc-datachannel 1024
+```
 
 # Security Considerations
 
