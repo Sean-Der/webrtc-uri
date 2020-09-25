@@ -105,11 +105,12 @@ The Agent with the URI needs to know the Address/Port ahead of time.
 ## Parameters
 The following parameters are recognized, more will need to be added.
 
-* ice-controlling = If Local ICE Agent is Controlling ( BOOL )
-* dtls-client     = If Local DTLS Agent is Client ( BOOL)
-* local-ice-ufrag = Local ICE Agent's user fragment ( STRING )
-* local-ice-pwd   = Local ICE Agent's password ( STRING )
-* datachannel     = Should a SCTP Assocation be started ( BOOL )
+* ice-controlling = If Local ICE Agent is Controlling ( BOOL ) (defaults to true )
+* dtls-client     = If Local DTLS Agent is Client ( BOOL) (defaults to false)
+* local-ice-ufrag = Local ICE Agent's user fragment ( STRING ) (defaults to remote ufrag value)
+* local-ice-pwd   = Local ICE Agent's password ( STRING ) (defaults to remote pwd)
+* datachannel     = Should a SCTP Assocation be started ( BOOL ) (defaults to true)
+* fingerprint     = DTLS fingerprint for local certificate (defaults to previous/configured value for same URI)
 
 # Examples of WebRTC URI Syntax
 
@@ -182,6 +183,7 @@ You get this Local Description
     a=setup:actpass
     a=mid:0
     a=sctpmap:5000 webrtc-datachannel 1024
+    a=fingerprint:tbd
 
 
 And this Remote Description
@@ -198,6 +200,8 @@ And this Remote Description
     a=setup:passive
     a=mid:0
     a=sctpmap:5000 webrtc-datachannel 1024
+    a=fingerprint:tbd
+
 
 
 # Security Considerations
